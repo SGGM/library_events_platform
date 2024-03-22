@@ -18,7 +18,7 @@ class OrganizationCreateAPIView(APIView):
             raise AuthenticationFailed("Unauthenticated")
 
         try:
-            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
+            jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed("Unauthenticated")
 

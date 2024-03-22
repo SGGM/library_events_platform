@@ -12,6 +12,7 @@ class CreateEventSerializer(serializers.ModelSerializer):
         model = Event
         fields = ("title", "description", "organizations", "image", "date")
 
+
 class EventFullSerializer(serializers.ModelSerializer):
 
     image = serializers.FileField(required=False)
@@ -19,13 +20,22 @@ class EventFullSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = ("id", "title", "description", "date", "image", "organizations")
+        fields = (
+            "id",
+            "title",
+            "description",
+            "date",
+            "image",
+            "organizations"
+        )
+
 
 class EventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
         fields = "__all__"
+
 
 class AllEventsSerializer(serializers.ModelSerializer):
 

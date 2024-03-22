@@ -33,7 +33,7 @@ if os.environ.get('ALLOWED_HOSTS') is not None:
     try:
         ALLOWED_HOSTS += os.environ.get('ALLOWED_HOSTS').split(',')
     except Exception as e:
-        print('Cant set ALLOWED_HOSTS, using default instead')
+        print(e, 'Cant set ALLOWED_HOSTS, using default instead')
 
 
 # Application definition

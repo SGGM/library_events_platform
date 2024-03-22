@@ -14,14 +14,18 @@ import jwt
 from .models import Event
 from .pagination import SmallPagesPagination
 from .tasks import task_execute
-from .serializers import CreateEventSerializer, EventFullSerializer, AllEventsSerializer
+from .serializers import (
+    CreateEventSerializer,
+    EventFullSerializer,
+    AllEventsSerializer
+)
 
 
 class EventCreateAPIView(APIView):
 
     parser_classes = (MultiPartParser, FormParser)
     serializer_class = CreateEventSerializer
-    
+
     def post(self, request, *args, **kwargs):
 
         token = request.COOKIES.get("jwt")
@@ -30,7 +34,7 @@ class EventCreateAPIView(APIView):
             raise AuthenticationFailed("Unauthenticated")
 
         try:
-            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
+            jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed("Unauthenticated")
 
@@ -40,7 +44,7 @@ class EventCreateAPIView(APIView):
             instance = serializer.save()
             instance_id = instance.id
 
-            job_params = {"db_id": instance.id}
+            job_params = {"db_id": instance_id}
 
             transaction.on_commit(lambda: task_execute.delay(job_params))
 
@@ -64,7 +68,7 @@ class EventAPIView(APIView):
             raise AuthenticationFailed("Unauthenticated")
 
         try:
-            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
+            jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed("Unauthenticated")
 
@@ -91,7 +95,7 @@ class AllEventsAPIView(generics.ListAPIView):
             raise AuthenticationFailed("Unauthenticated")
 
         try:
-            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
+            jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed("Unauthenticated")
 

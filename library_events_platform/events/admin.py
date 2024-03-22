@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from django.contrib import admin
 from rangefilter.filters import DateRangeFilterBuilder
 
